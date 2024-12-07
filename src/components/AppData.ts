@@ -1,6 +1,6 @@
 import _ from "lodash";
 
-import { FormErrors, IAppData, IContactsForm, IOrder, IOrderForm, IProduct } from "../types";
+import { FormErrors, IAppData, IOrder, IConcatForm, IProduct } from "../types";
 import { Model } from "./base/model";
 
 export class AppData extends Model<IAppData> {
@@ -12,7 +12,6 @@ export class AppData extends Model<IAppData> {
     address: '',
     email: '',
     phone: '',
-    total: 0,
     items: []
   };
   formErrors: FormErrors = {};
@@ -45,12 +44,8 @@ export class AppData extends Model<IAppData> {
     this.emitChanges('basket:changed');
   }
 
-  checkInOrder(id: string): boolean {
+  isInOrder(id: string): boolean {
     return _.includes(this.order.items, id);
-  }
-
-  setOrderTotal() {
-    this.order.total = this.getTotal();
   }
 
   clearBasket() {
@@ -59,16 +54,8 @@ export class AppData extends Model<IAppData> {
     );
   }
 
-  setOrderField(field: keyof IOrderForm, value: string) {
+  setOrderField(field: keyof IConcatForm, value: string) {
     this.order[field] = value;
-    if(this.validateOrder())
-      this.events.emit('order:ready', this.order);
-  }
-
-  setContactsField(field: keyof IContactsForm, value: string) {
-    this.order[field] = value;
-    if(this.validateContacts())
-      this.events.emit('contacts:ready', this.order);
   }
 
   validateOrder() {
@@ -78,7 +65,7 @@ export class AppData extends Model<IAppData> {
     if(!this.order.address)
       errors.address = 'Необходимо указать адрес'
     this.formErrors = errors;
-    this.emitChanges('formErrors:change', this.formErrors);
+    this.emitChanges('orderFormErrors:change', this.formErrors);
     return Object.keys(errors).length === 0;
   }
 
@@ -89,7 +76,7 @@ export class AppData extends Model<IAppData> {
     if(!this.order.phone)
       errors.phone = 'Необходимо указать телефон'
     this.formErrors = errors;
-    this.emitChanges('formErrors:change', this.formErrors);
+    this.emitChanges('contactsFormErrors:change', this.formErrors);
     return Object.keys(errors).length === 0;
   }
 }

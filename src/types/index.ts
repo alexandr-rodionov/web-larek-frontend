@@ -24,8 +24,10 @@ export interface IContactsForm {
   phone: string;
 }
 
-export interface IOrder extends IOrderForm, IContactsForm {
-  total: number;
+export type IConcatForm = IOrderForm & IContactsForm;
+
+export interface IOrder extends IConcatForm {
+  total?: number;
   items: string[];
 }
 
@@ -33,4 +35,5 @@ export type FormErrors = Partial<Record<keyof IOrder, string>>;
 
 export interface IOrderResult {
   id: string;
+  total: number;
 }

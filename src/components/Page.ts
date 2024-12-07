@@ -36,9 +36,6 @@ export class Page extends Component<IPage> {
   }
 
   set locked(value: boolean) {
-    // const scrollBarSize = window.innerWidth - document.documentElement.clientWidth;
-    // this._wrapper.style['marginRight'] = value ? `${scrollBarSize}px` : '';
-    // this._wrapper.style.overflow = value ? 'hidden' : '';
     if(value)
       this._wrapper.classList.add('page__wrapper_locked');
     else

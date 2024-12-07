@@ -22,7 +22,6 @@ export class Form<T> extends Component<IForm> {
       const field = target.name as keyof T;
       const value = target.value;
       this.onInputChange(field, value);
-      console.log(target.validity.patternMismatch)
     });
 
     this.container.addEventListener('submit', (e: Event) => {
